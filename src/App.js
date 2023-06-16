@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Home from "./pages/Home";
+import * as React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Login from "./pages/Login";
+import SignUp from "./pages/Signup";
+import CartPage from "./pages/CartPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import ProductsDetailPage from "./pages/ProductsDetailPage";
+import { MyContextProvider } from "./Context/ProductContext";
+import { CartProvider } from "./Context/CartContext";
 
-function App() {
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/productdetail/:id",
+    element: <ProductsDetailPage />,
+  },
+  {
+    path: "login",
+    element: <Login />,
+  },
+  {
+    path: "signup",
+    element: <SignUp />,
+  },
+  {
+    path: "cart",
+    element: <CartPage />,
+  },
+  {
+    path: "checkout",
+    element: <CheckoutPage />,
+  },
+]);
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <CartProvider>
+      <MyContextProvider>
+        <RouterProvider router={router} />
+      </MyContextProvider>
+    </CartProvider>
   );
 }
-
-export default App;
