@@ -30,9 +30,9 @@ export const CartProvider = ({ children }) => {
     setCart(uniqueCart);
   }, [cart]);
 
-  useEffect(() => {
-    removeDuplicates();
-  }, [cart, removeDuplicates]);
+  // useEffect(() => {
+  //   removeDuplicates();
+  // }, [cart, removeDuplicates]);
 
   return (
     <CartContext.Provider

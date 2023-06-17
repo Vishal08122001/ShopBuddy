@@ -207,7 +207,7 @@ export default function Checkout() {
                 Order Summary
               </h3>
               <div className="flow-root">
-                <ul role="list" className="-my-6 divide-y divide-gray-200">
+                <ul className="-my-6 divide-y divide-gray-200">
                   {products.map((product) => (
                     <li key={product.id} className="flex py-8 mb-4 ">
                       <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
@@ -270,7 +270,7 @@ export default function Checkout() {
               </p>
               <div className="mt-6">
                 <a
-                  href="#"
+                  href="*"
                   className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                 >
                   Pay and Order

@@ -8,12 +8,6 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../../Context/CartContext";
 
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
 const navigation = [
   { name: "Dashboard", href: "/", current: true },
   { name: "Wardrobe", href: "#", current: false },
@@ -140,20 +134,23 @@ export default function Navbar({ children }) {
               </div>
               <div className="border-t border-gray-700 pb-3 pt-4">
                 <div className="flex items-center px-5">
-                  <div className="flex-shrink-0">
-                    <img
-                      className="h-10 w-10 rounded-full"
-                      src={user.imageUrl}
-                      alt=""
-                    />
-                  </div>
-                  <div className="ml-3">
-                    <div className="text-base font-medium leading-none text-white">
-                      {user.name}
-                    </div>
-                    <div className="text-sm font-medium leading-none text-gray-400">
-                      {user.email}
-                    </div>
+                  <div className="flex  ">
+                    <Link to="/login">
+                      <button
+                        type="submit"
+                        className="flex w-full justify-center mx-3 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        LogIn
+                      </button>
+                    </Link>
+                    <Link to="/signup">
+                      <button
+                        type="submit"
+                        className="flex w-full justify-center mx-5 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      >
+                        SignUp
+                      </button>
+                    </Link>
                   </div>
                   <button
                     type="button"
@@ -169,7 +166,7 @@ export default function Navbar({ children }) {
                     </Link>
                   </button>
                   <span className="inline-flex items-center rounded-md mb-5 -ml-2 bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
-                    4
+                    {cart.length}
                   </span>
                 </div>
               </div>

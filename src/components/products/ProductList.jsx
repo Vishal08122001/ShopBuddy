@@ -13,9 +13,9 @@ import {
 import { Link } from "react-router-dom";
 
 const sortOptions = [
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
+  { name: "Best Rating", current: false },
+  { name: "Price: Low to High", current: false },
+  { name: "Price: High to Low", current: false },
 ];
 
 const filters = [
@@ -38,7 +38,7 @@ function classNames(...classes) {
 
 const ProductList = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const { data, setData } = useContext(MyContext);
+  const { data } = useContext(MyContext);
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [selectedSortOption, setSelectedSortOption] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -238,8 +238,7 @@ const ProductList = () => {
                       {sortOptions.map((option) => (
                         <Menu.Item key={option.name}>
                           {({ active }) => (
-                            <a
-                              href={option.href}
+                            <button
                               className={classNames(
                                 option.current
                                   ? "font-medium text-gray-900"
@@ -252,7 +251,7 @@ const ProductList = () => {
                               }}
                             >
                               {option.name}
-                            </a>
+                            </button>
                           )}
                         </Menu.Item>
                       ))}
@@ -369,28 +368,28 @@ const ProductList = () => {
                   <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
                     <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8 ">
                       {currentProducts.map((product) => (
-                        <Link to={`/productdetail/${product.id}`}>
-                          <div
-                            key={product.id}
-                            className="group relative border-solid border-2 p-2"
-                          >
-                            <div className="min-h-50 min-w-50 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                        <Link
+                          to={`/productdetail/${product.id}`}
+                          key={product.id}
+                        >
+                          <div className="group relative border-solid border-2 p-2">
+                            <div className="min-h-50 min-w-50 max-h-45 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                               <img
                                 src={product.thumbnail}
                                 alt={product.images[0]}
-                                className="min-h-60  h-full w-full object-cover object-center lg:h-full lg:w-full"
+                                className="min-h-60  h-full w-full  object-cover object-center lg:h-full lg:w-full"
                               />
                             </div>
                             <div className="mt-4 flex justify-between">
                               <div>
                                 <h3 className="text-sm text-gray-700">
-                                  <a href={product.href}>
+                                  <button>
                                     <span
                                       aria-hidden="true"
                                       className="absolute inset-0"
                                     />
                                     {product.title}
-                                  </a>
+                                  </button>
                                 </h3>
                                 <p className="mt-1 text-sm text-gray-500 flex justify-start align-middle">
                                   <StarIcon className="w-6 h-6 inline" />
@@ -425,6 +424,32 @@ const ProductList = () => {
           {/* Pagination */}
           <nav className="flex justify-end pb-8" aria-label="Pagination">
             <ul className="inline-flex items-center">
+              <button
+                className="text-gray-500 hover:bg-gray-200 hover:text-gray-800  px-2 py-2 border border-gray-300 text-sm font-medium"
+                style={{
+                  borderTopLeftRadius: "10px",
+                  borderBottomLeftRadius: "10px",
+                }}
+                onClick={(e) => {
+                  setCurrentPage(currentPage - 1);
+                }}
+                disabled={currentPage == 1}
+              >
+                <span className="sr-only">Previous</span>
+                <svg
+                  className="h-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+
               {Array.from({
                 length: Math.ceil(sortedData.length / productsPerPage),
               }).map((_, index) => (
@@ -442,6 +467,31 @@ const ProductList = () => {
                   </button>
                 </li>
               ))}
+              <button
+                className="text-gray-500 hover:bg-gray-200 hover:text-gray-800  px-2 py-2 border border-gray-300 text-sm font-medium"
+                style={{
+                  borderTopRightRadius: "10px",
+                  borderBottomRightRadius: "10px",
+                }}
+                onClick={(e) => setCurrentPage(currentPage + 1)}
+                disabled={
+                  currentPage === Math.ceil(sortedData.length / productsPerPage)
+                }
+              >
+                <span className="sr-only">Next</span>
+                <svg
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
             </ul>
           </nav>
         </main>
