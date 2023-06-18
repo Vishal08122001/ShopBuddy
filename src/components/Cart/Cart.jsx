@@ -4,15 +4,7 @@ import { CartContext } from "../../Context/CartContext";
 
 export default function Cart() {
   const [open, setOpen] = useState(true);
-  const [qty, setQty] = useState(1);
   const { cart, setCart, removeFromCart } = useContext(CartContext);
-
-  let Total = 0;
-  cart.forEach((element) => {
-    Total =
-      Total +
-      Math.round(element.price * (1 - element.discountPercentage / 100));
-  });
 
   const handleRemove = (id) => {
     removeFromCart(id);
@@ -22,11 +14,18 @@ export default function Cart() {
     const updatedCart = cart.map((product) =>
       product.id === id ? { ...product, qty: quantity } : product
     );
-    setQty(quantity);
     setCart(updatedCart);
   };
+
+  let subtotal = 0;
+  cart.forEach((product) => {
+    subtotal +=
+      Math.round(product.price * (1 - product.discountPercentage / 100)) *
+      product.qty;
+  });
+
   return (
-    <div className=" mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 bg-white py-3">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 bg-white py-3">
       <div className="mt-8">
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 flex justify-start mb-3">
           Cart
@@ -47,12 +46,12 @@ export default function Cart() {
                   <div className="ml-4 flex flex-1 flex-col">
                     <div>
                       <div className="flex justify-between text-base font-medium text-gray-900">
-                        <h3>
-                          <a href={`/productdetail/${product.id}`}>
+                        <h3 className="text-lg">
+                          <Link to={`/productdetail/${product.id}`}>
                             {product.title}
-                          </a>
+                          </Link>
                         </h3>
-                        <p className="ml-4">
+                        <p className="ml-4 text-lg">
                           {Math.round(
                             product.price *
                               (1 - product.discountPercentage / 100)
@@ -60,38 +59,57 @@ export default function Cart() {
                         </p>
                       </div>
                       <p className="mt-1 text-sm text-gray-500">
-                        {product.color}
+                        {product.brand}
                       </p>
                     </div>
                     <div className="flex flex-1 items-end justify-between text-sm">
-                      <div className="text-gray-500">
-                        <label
-                          htmlFor="Qty"
-                          className="inline mx-3 text-sm font-medium leading-6 text-gray-900"
-                        >
-                          Qty
-                        </label>
-                        <select
-                          onClick={(e) => {
-                            handleQty(product.id, e.target.value);
-                          }}
-                          className=" rounded-lg border border-gray-400"
-                        >
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                        </select>
+                      <div
+                        className="text-gray-500 flex justify-center  "
+                        style={{ alignItems: "center" }}
+                      >
+                        <div className="flex justify-center ">
+                          <button
+                            onClick={() =>
+                              handleQty(product.id, product.qty - 1)
+                            }
+                            disabled={product.qty === 1}
+                            style={{
+                              borderTopLeftRadius: "10px",
+                              borderBottomLeftRadius: "10px",
+                            }}
+                            className="text-gray-500 hover:bg-gray-200 hover:text-gray-800
+                                      px-3 py-1 border border-gray-300  font-bold text-xl"
+                          >
+                            -
+                          </button>
+                          <p
+                            className="text-gray-500 hover:bg-gray-200 hover:text-gray-800
+                      px-4 py-2 border font-bold border-gray-300 text-md"
+                          >
+                            {product.qty}
+                          </p>
+                          <button
+                            onClick={() =>
+                              handleQty(product.id, product.qty + 1)
+                            }
+                            disabled={product.qty === 10}
+                            className="text-gray-500 hover:bg-gray-200 hover:text-gray-800
+                      px-3 py-1 border border-gray-300 text-xl font-bold"
+                            style={{
+                              borderTopRightRadius: "10px",
+                              borderBottomRightRadius: "10px",
+                            }}
+                          >
+                            +
+                          </button>
+                        </div>
                       </div>
 
                       <div className="flex">
                         <button
                           type="button"
                           className="font-medium text-indigo-600 hover:text-indigo-500"
-                          onClick={(e) => {
-                            handleRemove(product.id);
-                          }}
+                          onClick={() => handleRemove(product.id)}
                         >
                           Remove
                         </button>
@@ -113,7 +131,7 @@ export default function Cart() {
         <div className="flex justify-between text-base font-medium text-gray-900">
           <p>Subtotal</p>
           <p className="text-2xl font-bold tracking-tight text-gray-900">
-            $ {Total * qty}
+            ${subtotal}
           </p>
         </div>
         <p className="mt-0.5 text-sm text-gray-500">
@@ -129,7 +147,7 @@ export default function Cart() {
         </div>
         <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
           <p>
-            or
+            or{" "}
             <Link to="/">
               <button
                 type="button"

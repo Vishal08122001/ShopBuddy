@@ -10,7 +10,7 @@ function classNames(...classes) {
 
 export default function ProductDetail() {
   const { data } = useContext(MyContext);
-  const { addToCart } = useContext(CartContext);
+  const { cart, addToCart } = useContext(CartContext);
 
   const { id } = useParams();
 
@@ -19,8 +19,12 @@ export default function ProductDetail() {
   });
 
   const handleAddToCart = () => {
-    addToCart(product);
-    alert("Item added to cart");
+    if (cart.some((item) => item.id === product.id)) {
+      alert("Item already in cart!");
+    } else {
+      addToCart(product);
+      alert("Item added to cart!");
+    }
   };
 
   return (

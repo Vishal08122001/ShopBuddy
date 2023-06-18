@@ -12,6 +12,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { CartContext } from "../../Context/CartContext";
+
 const sortOptions = [
   { name: "Best Rating", current: false },
   { name: "Price: Low to High", current: false },
@@ -39,7 +40,7 @@ function classNames(...classes) {
 const ProductList = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const { data } = useContext(MyContext);
-  const { addToCart } = useContext(CartContext);
+  const { cart, addToCart } = useContext(CartContext);
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [selectedSortOption, setSelectedSortOption] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -79,8 +80,12 @@ const ProductList = () => {
   };
 
   const handleAddToCart = (product) => {
-    addToCart(product);
-    alert("Item added to cart");
+    if (cart.some((item) => item.id === product.id)) {
+      alert("Item already in cart!");
+    } else {
+      addToCart(product);
+      alert("Item added to cart!");
+    }
   };
 
   return (
@@ -213,7 +218,7 @@ const ProductList = () => {
         </Transition.Root>
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
+          <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-12">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900">
               All Products
             </h2>
@@ -400,7 +405,10 @@ const ProductList = () => {
                                   </h3>
                                   <p className="mt-1 text-sm text-gray-500 flex justify-start align-middle">
                                     <StarIcon className="w-6 h-6 inline" />
-                                    <span className="align-middle">
+                                    <span
+                                      className="align-middle pt-1 mx-1"
+                                      style={{ alignItems: "center" }}
+                                    >
                                       {product.rating}
                                     </span>
                                   </p>

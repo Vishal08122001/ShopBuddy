@@ -10,7 +10,6 @@ import { CartContext } from "../../Context/CartContext";
 
 const navigation = [
   { name: "Dashboard", to: "/", current: true },
-  { name: "Wardrobe", to: "#", current: false },
   { name: "Electronics", to: "#", current: false },
   { name: "Kitchen", to: "#", current: false },
   { name: "Orders", to: "#", current: false },
