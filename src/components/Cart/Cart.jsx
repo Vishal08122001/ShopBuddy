@@ -75,6 +75,7 @@ export default function Cart() {
                           onClick={(e) => {
                             handleQty(product.id, e.target.value);
                           }}
+                          className=" rounded-lg border border-gray-400"
                         >
                           <option value="1">1</option>
                           <option value="2">2</option>

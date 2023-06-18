@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useState, useCallback } from "react";
 
 export const CartContext = createContext();
 
@@ -29,10 +29,6 @@ export const CartProvider = ({ children }) => {
     });
     setCart(uniqueCart);
   }, [cart]);
-
-  // useEffect(() => {
-  //   removeDuplicates();
-  // }, [cart, removeDuplicates]);
 
   return (
     <CartContext.Provider

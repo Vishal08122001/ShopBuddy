@@ -9,11 +9,11 @@ import { Link } from "react-router-dom";
 import { CartContext } from "../../Context/CartContext";
 
 const navigation = [
-  { name: "Dashboard", href: "/", current: true },
-  { name: "Wardrobe", href: "#", current: false },
-  { name: "Electronics", href: "#", current: false },
-  { name: "Kitchen", href: "#", current: false },
-  { name: "Orders", href: "#", current: false },
+  { name: "Dashboard", to: "/", current: true },
+  { name: "Wardrobe", to: "#", current: false },
+  { name: "Electronics", to: "#", current: false },
+  { name: "Kitchen", to: "#", current: false },
+  { name: "Orders", to: "#", current: false },
 ];
 
 function classNames(...classes) {
@@ -43,9 +43,9 @@ export default function Navbar({ children }) {
                   <div className="hidden md:block">
                     <div className="ml-10 flex items-baseline space-x-4">
                       {navigation.map((item) => (
-                        <a
+                        <Link
                           key={item.name}
-                          href={item.href}
+                          to={item.to}
                           className={classNames(
                             item.current
                               ? "bg-gray-900 text-white"
@@ -55,7 +55,7 @@ export default function Navbar({ children }) {
                           aria-current={item.current ? "page" : undefined}
                         >
                           {item.name}
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   </div>

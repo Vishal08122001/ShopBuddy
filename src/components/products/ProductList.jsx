@@ -11,7 +11,7 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
-
+import { CartContext } from "../../Context/CartContext";
 const sortOptions = [
   { name: "Best Rating", current: false },
   { name: "Price: Low to High", current: false },
@@ -21,7 +21,7 @@ const sortOptions = [
 const filters = [
   {
     id: "category",
-    name: "Category",
+    name: "Filters",
     options: [
       { value: "smartphones", label: "smartphones", checked: false },
       { value: "laptops", label: "laptops", checked: false },
@@ -39,6 +39,7 @@ function classNames(...classes) {
 const ProductList = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const { data } = useContext(MyContext);
+  const { addToCart } = useContext(CartContext);
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [selectedSortOption, setSelectedSortOption] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,6 +76,11 @@ const ProductList = () => {
 
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    alert("Item added to cart");
   };
 
   return (
@@ -126,7 +132,7 @@ const ProductList = () => {
 
                   {/* Filters */}
                   <form className="mt-4 border-t border-gray-200">
-                    <h3 className="sr-only">Categories</h3>
+                    <h3 className="sr-only">Filter</h3>
                     {filters.map((section) => (
                       <Disclosure
                         as="div"
@@ -286,7 +292,7 @@ const ProductList = () => {
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               {/* Filters */}
               <form className="hidden lg:block">
-                <h3 className="sr-only">Categories</h3>
+                <h3 className="sr-only">Filters</h3>
 
                 {filters.map((section) => (
                   <Disclosure
@@ -368,51 +374,62 @@ const ProductList = () => {
                   <div className="mx-auto max-w-2xl px-4 py-0 sm:px-6 sm:py-0 lg:max-w-7xl lg:px-8">
                     <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8 ">
                       {currentProducts.map((product) => (
-                        <Link
-                          to={`/productdetail/${product.id}`}
-                          key={product.id}
-                        >
-                          <div className="group relative border-solid border-2 p-2">
-                            <div className="min-h-50 min-w-50 max-h-45 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                              <img
-                                src={product.thumbnail}
-                                alt={product.images[0]}
-                                className="min-h-60  h-full w-full  object-cover object-center lg:h-full lg:w-full"
-                              />
-                            </div>
-                            <div className="mt-4 flex justify-between">
-                              <div>
-                                <h3 className="text-sm text-gray-700">
-                                  <button>
-                                    <span
-                                      aria-hidden="true"
-                                      className="absolute inset-0"
-                                    />
-                                    {product.title}
-                                  </button>
-                                </h3>
-                                <p className="mt-1 text-sm text-gray-500 flex justify-start align-middle">
-                                  <StarIcon className="w-6 h-6 inline" />
-                                  <span className="align-middle">
-                                    {product.rating}
-                                  </span>
-                                </p>
+                        <div key={product.id}>
+                          <Link to={`/productdetail/${product.id}`}>
+                            <div
+                              className=" relative border-solid border-2 p-2"
+                              style={{ borderRadius: "10px" }}
+                            >
+                              <div className="min-h-50 min-w-50 max-h-45 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                                <img
+                                  src={product.thumbnail}
+                                  alt={product.images[0]}
+                                  className="min-h-60  h-full w-full  object-cover object-center lg:h-full lg:w-full"
+                                />
                               </div>
-                              <div className="flex flex-col">
-                                <p className="text-sm font-medium text-gray-900 ">
-                                  $
-                                  {Math.round(
-                                    product.price *
-                                      (1 - product.discountPercentage / 100)
-                                  )}
-                                </p>
-                                <p className="text-sm font-medium text-gray-400 line-through">
-                                  ${product.price}
-                                </p>
+                              <div className="mt-4  flex justify-between">
+                                <div>
+                                  <h3 className="text-sm text-gray-700">
+                                    <button>
+                                      <span
+                                        aria-hidden="true"
+                                        className="absolute inset-0"
+                                      />
+                                      {product.title}
+                                    </button>
+                                  </h3>
+                                  <p className="mt-1 text-sm text-gray-500 flex justify-start align-middle">
+                                    <StarIcon className="w-6 h-6 inline" />
+                                    <span className="align-middle">
+                                      {product.rating}
+                                    </span>
+                                  </p>
+                                </div>
+                                <div className="flex flex-col">
+                                  <p className="text-sm font-medium text-gray-900 ">
+                                    $
+                                    {Math.round(
+                                      product.price *
+                                        (1 - product.discountPercentage / 100)
+                                    )}
+                                  </p>
+                                  <p className="text-sm font-medium text-gray-400 line-through pb-3 pt-1">
+                                    ${product.price}
+                                  </p>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </Link>
+                          </Link>
+                          <form className="mt-1">
+                            <button
+                              type="button"
+                              onClick={(e) => handleAddToCart(product)}
+                              className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-1 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            >
+                              Add to Cart
+                            </button>
+                          </form>
+                        </div>
                       ))}
                     </div>
                   </div>
