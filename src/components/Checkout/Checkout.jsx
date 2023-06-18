@@ -1,7 +1,5 @@
 import React from "react";
-import { Fragment, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const products = [
