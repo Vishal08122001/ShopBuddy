@@ -1,13 +1,22 @@
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../../Context/CartContext";
+import React from "react";
+import Modal from "../Modal/Modal";
 
-export default function Cart() {
+export default function Cart({ head, SubPart }) {
   const [open, setOpen] = useState(true);
   const { cart, setCart, removeFromCart } = useContext(CartContext);
+  const [showModal, setShowModal] = useState(false);
+  const [msg, setMsg] = useState({
+    head: "",
+    body: "",
+  });
 
   const handleRemove = (id) => {
     removeFromCart(id);
+    setShowModal(true);
+    setMsg({ head: "Done!", body: "Item removed from Cart." });
   };
 
   const handleQty = (id, quantity) => {
@@ -28,7 +37,7 @@ export default function Cart() {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 bg-white py-3">
       <div className="mt-8">
         <h1 className="text-4xl font-bold tracking-tight text-gray-900 flex justify-start mb-3">
-          Cart
+          {head ? head : null}
         </h1>
         <div className="flow-root">
           <ul className="-my-6 divide-y divide-gray-200">
@@ -124,43 +133,48 @@ export default function Cart() {
               </h1>
             )}
           </ul>
+          {showModal && (
+            <Modal show={showModal} setShow={setShowModal} msg={msg} />
+          )}
         </div>
       </div>
 
-      <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-        <div className="flex justify-between text-base font-medium text-gray-900">
-          <p>Subtotal</p>
-          <p className="text-2xl font-bold tracking-tight text-gray-900">
-            ${subtotal}
+      {SubPart && (
+        <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
+          <div className="flex justify-between text-base font-medium text-gray-900">
+            <p>Subtotal</p>
+            <p className="text-2xl font-bold tracking-tight text-gray-900">
+              ${subtotal}
+            </p>
+          </div>
+          <p className="mt-0.5 text-sm text-gray-500">
+            Shipping and taxes calculated at checkout.
           </p>
-        </div>
-        <p className="mt-0.5 text-sm text-gray-500">
-          Shipping and taxes calculated at checkout.
-        </p>
-        <div className="mt-6">
-          <a
-            href="/"
-            className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-          >
-            Checkout
-          </a>
-        </div>
-        <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-          <p>
-            or{" "}
-            <Link to="/">
-              <button
-                type="button"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
-                onClick={() => setOpen(false)}
-              >
-                Continue Shopping
-                <span aria-hidden="true"> &rarr;</span>
-              </button>
+          <div className="mt-6">
+            <Link
+              to={"/checkout"}
+              className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+            >
+              Checkout
             </Link>
-          </p>
+          </div>
+          <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
+            <p>
+              or{" "}
+              <Link to="/">
+                <button
+                  type="button"
+                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                  onClick={() => setOpen(false)}
+                >
+                  Continue Shopping
+                  <span aria-hidden="true"> &rarr;</span>
+                </button>
+              </Link>
+            </p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

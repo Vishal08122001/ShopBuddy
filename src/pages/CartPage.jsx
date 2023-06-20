@@ -7,7 +7,7 @@ const CartPage = () => {
   return (
     <div>
       <Navbar />
-      <Cart />
+      <Cart head={"Cart"} SubPart={true} />
       <Footer />
     </div>
   );

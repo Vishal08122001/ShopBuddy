@@ -7,6 +7,9 @@ import {
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../../Context/CartContext";
+import { firebaseAuth } from "../../utils/Firebase-config";
+import { signOut } from "firebase/auth";
+import logo from "../../Assets/ShopBuddy.png";
 
 const navigation = [
   { name: "Dashboard", to: "/", current: true },
@@ -21,22 +24,18 @@ function classNames(...classes) {
 
 export default function Navbar({ children }) {
   const { cart } = useContext(CartContext);
+  console.log(firebaseAuth.currentUser);
   return (
     <div className="min-h-full">
       <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
           <>
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl px-3 sm:px-5 lg:px-7">
               <div className="flex h-16 items-center justify-between">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
                     <Link to="/">
-                      <img
-                        className="h-8 w-8"
-                        src="https://lh3.googleusercontent.com/p/AF1QipPhvtCoqPOVOjZk8TJVfXdFk4fTDxWtxgKt1nZ7=s680-w680-h510"
-                        alt="Your Company"
-                        width={100}
-                      />
+                      <img className="h-12 w-36" src={logo} alt="logo" />
                     </Link>
                   </div>
                   <div className="hidden md:block">
@@ -81,19 +80,24 @@ export default function Navbar({ children }) {
                     <div className="flex  ">
                       <Link to="/login">
                         <button
+                          onClick={() => signOut(firebaseAuth)}
                           type="submit"
                           className="flex w-full justify-center mx-3 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                         >
-                          LogIn
+                          {firebaseAuth.currentUser ? "LogOut" : "Login"}
                         </button>
                       </Link>
                       <Link to="/signup">
-                        <button
-                          type="submit"
-                          className="flex w-full justify-center mx-5 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                          SignUp
-                        </button>
+                        {firebaseAuth.currentUser === null ? (
+                          <button
+                            type="submit"
+                            className="flex w-full justify-center mx-5 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          >
+                            SignUp
+                          </button>
+                        ) : (
+                          ""
+                        )}
                       </Link>
                     </div>
                   </div>

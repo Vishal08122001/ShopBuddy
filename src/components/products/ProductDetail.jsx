@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { useParams } from "react-router-dom";
 import { MyContext } from "../../Context/ProductContext";
 import { CartContext } from "../../Context/CartContext";
+import Modal from "../Modal/Modal";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -11,6 +12,11 @@ function classNames(...classes) {
 export default function ProductDetail() {
   const { data } = useContext(MyContext);
   const { cart, addToCart } = useContext(CartContext);
+  const [showModal, setShowModal] = useState(false);
+  const [msg, setMsg] = useState({
+    head: "",
+    body: "",
+  });
 
   const { id } = useParams();
 
@@ -20,10 +26,15 @@ export default function ProductDetail() {
 
   const handleAddToCart = () => {
     if (cart.some((item) => item.id === product.id)) {
-      alert("Item already in cart!");
+      setShowModal(true);
+      setMsg({ head: "Oops!", body: "Sorry, Item is already in Cart." });
     } else {
       addToCart(product);
-      alert("Item added to cart!");
+      setShowModal(true);
+      setMsg({
+        head: "Congratulations!",
+        body: "Item added in Cart. ThankYou!",
+      });
     }
   };
 
@@ -57,6 +68,9 @@ export default function ProductDetail() {
               ))
             ) : (
               <h2 className="sr-only">Some error here</h2>
+            )}
+            {showModal && (
+              <Modal msg={msg} show={showModal} setShow={setShowModal} />
             )}
             <li className="text-sm">
               <a

@@ -12,6 +12,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { CartContext } from "../../Context/CartContext";
+import Modal from "../Modal/Modal";
 
 const sortOptions = [
   { name: "Best Rating", current: false },
@@ -45,6 +46,11 @@ const ProductList = () => {
   const [selectedSortOption, setSelectedSortOption] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
+  const [showModal, setShowModal] = useState(false);
+  const [msg, setMsg] = useState({
+    head: "",
+    body: "",
+  });
 
   // Filter data based on selected filters
   const filteredData = data.filter((product) => {
@@ -81,10 +87,15 @@ const ProductList = () => {
 
   const handleAddToCart = (product) => {
     if (cart.some((item) => item.id === product.id)) {
-      alert("Item already in cart!");
+      setShowModal(true);
+      setMsg({ head: "Oops!", body: "Sorry, Item is already in Cart." });
     } else {
       addToCart(product);
-      alert("Item added to cart!");
+      setShowModal(true);
+      setMsg({
+        head: "Congratulations!",
+        body: "Item added in Cart. ThankYou!",
+      });
     }
   };
 
@@ -276,7 +287,6 @@ const ProductList = () => {
                 className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7"
               >
                 <span className="sr-only">View grid</span>
-                <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
               </button>
               <button
                 type="button"
@@ -440,6 +450,13 @@ const ProductList = () => {
                         </div>
                       ))}
                     </div>
+                    {showModal && (
+                      <Modal
+                        show={showModal}
+                        setShow={setShowModal}
+                        msg={msg}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
