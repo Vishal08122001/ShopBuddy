@@ -26,7 +26,7 @@ export default function Navbar({ children }) {
   const { cart } = useContext(CartContext);
   return (
     <div className="min-h-full">
-      <Disclosure as="nav" className="bg-black">
+      <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
           <>
             <div className="mx-auto max-w-7xl px-3 sm:px-5 lg:px-7">

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { MyContext } from "../../Context/ProductContext";
 import { Fragment, useState } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
@@ -84,6 +84,10 @@ const ProductList = () => {
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
 
   const handleAddToCart = (product) => {
     if (cart.some((item) => item.id === product.id)) {
