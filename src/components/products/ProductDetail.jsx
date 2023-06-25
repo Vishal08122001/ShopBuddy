@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { useParams } from "react-router-dom";
 import { MyContext } from "../../Context/ProductContext";
@@ -37,6 +37,10 @@ export default function ProductDetail() {
       });
     }
   };
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
   return (
     <div className="bg-white">
