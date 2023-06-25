@@ -291,7 +291,7 @@ export default function Checkout() {
               <div className="mt-6">
                 <button
                   className={`flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm ${
-                    !isDisabled ? "hover:bg-indigo-700" : " bg-indigo-400"
+                    !isDisabled ? "hover:bg-indigo-700" : " bg-indigo-300"
                   } `}
                   disabled={isDisabled}
                   style={{ width: "100%" }}
