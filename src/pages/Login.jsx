@@ -8,6 +8,7 @@ import {
   sendPasswordResetEmail,
 } from "firebase/auth";
 import { firebaseAuth } from "../utils/Firebase-config";
+import Loader from "../components/Loader/Loader";
 
 export default function Login() {
   const [formdata, setFormData] = useState({
@@ -19,11 +20,12 @@ export default function Login() {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    console.log("Clicked");
+    setLoading(true);
     const { email, password } = formdata;
     const emailRegex = /^\S+@\S+\.\S+$/;
     if (!emailRegex.test(email)) {
@@ -31,6 +33,7 @@ export default function Login() {
         ...prevErrors,
         email: "Invalid email address",
       }));
+      setLoading(false);
       return;
     }
 
@@ -40,19 +43,20 @@ export default function Login() {
         ...prevErrors,
         password: "Password must contain at least 6 characters.",
       }));
+      setLoading(false);
       return;
     }
 
     try {
       await signInWithEmailAndPassword(firebaseAuth, email, password);
-      console.log("Logged In");
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       const msg = error.code.split("/");
       setErrors((prev) => ({
         ...prev,
         password: msg[1],
       }));
-      console.log(error);
     }
   };
 
@@ -181,7 +185,7 @@ export default function Login() {
               onClick={handleLogin}
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              LogIn
+              {loading ? <Loader /> : "Login"}
             </button>
           </div>
           <p className="mt-10 text-center text-sm text-gray-500">
