@@ -139,19 +139,24 @@ export default function Navbar({ children }) {
                   <div className="flex  ">
                     <Link to="/login">
                       <button
+                        onClick={() => signOut(firebaseAuth)}
                         type="submit"
                         className="flex w-full justify-center mx-3 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
-                        LogIn
+                        {firebaseAuth.currentUser ? "LogOut" : "Login"}
                       </button>
                     </Link>
                     <Link to="/signup">
-                      <button
-                        type="submit"
-                        className="flex w-full justify-center mx-5 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                      >
-                        SignUp
-                      </button>
+                      {firebaseAuth.currentUser === null ? (
+                        <button
+                          type="submit"
+                          className="flex w-full justify-center mx-5 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                        >
+                          SignUp
+                        </button>
+                      ) : (
+                        ""
+                      )}
                     </Link>
                   </div>
                   <button
