@@ -86,12 +86,12 @@ export default function Login() {
             src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
             alt="Your Company"
           />
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Login to your account
           </h2>
         </div>
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm space-y-4">
+        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-sm space-y-4">
           <div>
             <label
               htmlFor="email"
@@ -176,7 +176,7 @@ export default function Login() {
             </div>
           </div>
 
-          <div className="mt-2">
+          <div className="py-2">
             <button
               onClick={handleLogin}
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

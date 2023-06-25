@@ -5,8 +5,13 @@ import Cart from "../Cart/Cart";
 import { CartContext } from "../../Context/CartContext";
 
 export default function Checkout() {
-  const [open, setOpen] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(true);
   const { cart } = useContext(CartContext);
+  const [Address, setAddress] = useState({
+    fname: "",
+    lname: "",
+    Add: { street: "", city: "", zip: "" },
+  });
 
   let subtotal = 0;
   cart.forEach((product) => {
@@ -43,6 +48,12 @@ export default function Checkout() {
                         id="first-name"
                         autoComplete="given-name"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        onChange={(e) =>
+                          setAddress((prev) => ({
+                            ...prev,
+                            fname: e.target.value,
+                          }))
+                        }
                       />
                     </div>
                   </div>
@@ -61,6 +72,12 @@ export default function Checkout() {
                         id="last-name"
                         autoComplete="family-name"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        onChange={(e) =>
+                          setAddress((prev) => ({
+                            ...prev,
+                            lname: e.target.value,
+                          }))
+                        }
                       />
                     </div>
                   </div>
@@ -118,6 +135,15 @@ export default function Checkout() {
                         id="street-address"
                         autoComplete="street-address"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        onChange={(e) =>
+                          setAddress((prev) => ({
+                            ...prev,
+                            Add: {
+                              ...prev.Add,
+                              street: e.target.value,
+                            },
+                          }))
+                        }
                       />
                     </div>
                   </div>
@@ -136,6 +162,15 @@ export default function Checkout() {
                         id="city"
                         autoComplete="address-level2"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        onChange={(e) =>
+                          setAddress((prev) => ({
+                            ...prev,
+                            Add: {
+                              ...prev.Add,
+                              city: e.target.value,
+                            },
+                          }))
+                        }
                       />
                     </div>
                   </div>
@@ -172,12 +207,64 @@ export default function Checkout() {
                         id="postal-code"
                         autoComplete="postal-code"
                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        onChange={(e) =>
+                          setAddress((prev) => ({
+                            ...prev,
+                            Add: {
+                              ...prev.Add,
+                              zip: e.target.value,
+                            },
+                          }))
+                        }
                       />
                     </div>
                   </div>
                 </div>
+                <div className="flex  justify-end ">
+                  <button
+                    type="submit"
+                    className="flex mt-5 justify-center mx-5 rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
             </div>
+            <fieldset className="mt-5">
+              <legend className="text-sm font-semibold leading-6 text-gray-900">
+                Select Address
+              </legend>
+              <div className="mt-6 space-y-6">
+                {Address.Add.street.length > 0 && (
+                  <div className="relative flex gap-x-3">
+                    <div className="flex h-6 items-center">
+                      <input
+                        id="comments"
+                        name="comments"
+                        type="checkbox"
+                        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        onChange={() => setIsDisabled(!isDisabled)}
+                      />
+                    </div>
+                    <div className="text-sm leading-6">
+                      <label
+                        htmlFor="comments"
+                        className="font-medium text-gray-900"
+                      >
+                        {Address.fname + " " + Address.lname}
+                      </label>
+                      <p className="text-gray-500">
+                        {Address.Add.street +
+                          " " +
+                          Address.Add.city +
+                          " " +
+                          Address.Add.zip}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </fieldset>
           </form>
         </div>
         <div className="lg:col-span-2">
@@ -202,21 +289,23 @@ export default function Checkout() {
                 Shipping and taxes calculated at checkout.
               </p>
               <div className="mt-6">
-                <a
-                  href="/"
-                  className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                <button
+                  className={`flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm ${
+                    !isDisabled ? "hover:bg-indigo-700" : " bg-indigo-400"
+                  } `}
+                  disabled={isDisabled}
+                  style={{ width: "100%" }}
                 >
                   Pay and Order
-                </a>
+                </button>
               </div>
               <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-                <p>
+                <p className="-mt-4">
                   or{" "}
                   <Link to="/">
                     <button
                       type="button"
                       className="font-medium text-indigo-600 hover:text-indigo-500"
-                      onClick={() => setOpen(false)}
                     >
                       Continue Shopping
                       <span aria-hidden="true"> &rarr;</span>
