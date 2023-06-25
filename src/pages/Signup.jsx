@@ -3,7 +3,6 @@ import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/common/footer";
 import {
   onAuthStateChanged,
-  sendSignInLinkToEmail,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { useEffect, useState } from "react";

@@ -5,7 +5,6 @@ import React from "react";
 import Modal from "../Modal/Modal";
 
 export default function Cart({ head, SubPart }) {
-  const [open, setOpen] = useState(true);
   const { cart, setCart, removeFromCart } = useContext(CartContext);
   const [showModal, setShowModal] = useState(false);
   const [msg, setMsg] = useState({
@@ -165,7 +164,6 @@ export default function Cart({ head, SubPart }) {
                 <button
                   type="button"
                   className="font-medium text-indigo-600 hover:text-indigo-500"
-                  onClick={() => setOpen(false)}
                 >
                   Continue Shopping
                   <span aria-hidden="true"> &rarr;</span>
